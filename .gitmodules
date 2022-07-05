@@ -1,0 +1,3 @@
+[submodule "HomeEnvironment"]
+	path = HomeEnvironment
+	url = https://github.com/fabioc9675/HomeEnvironment.git
