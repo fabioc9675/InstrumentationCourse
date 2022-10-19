@@ -1,35 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import Carousel from "react-bootstrap/Carousel";
+
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
-import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Filler,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
+
+import CarrouselCmp from "./components/CarrouselCmp";
 
 import { axiosInstance } from "../src/config/config";
 import { useEffect, useState } from "react";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Filler,
-  Tooltip,
-  Legend
-);
+import TableCmp from "./components/TableCmp";
+import ChartCmp from "./components/ChartCmp";
 
 function App() {
   const title = "Modificacion de menu";
@@ -50,35 +30,6 @@ function App() {
       ruido: [0, 0],
     },
   ]);
-
-  // constate para las opciones de la grafica
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Gráfica de Datos",
-      },
-    },
-    scales: {
-      y: {
-        type: "linear",
-        display: true,
-        position: "left",
-      },
-      y1: {
-        type: "linear",
-        display: true,
-        position: "right",
-        grid: {
-          drawOnChartArea: false,
-        },
-      },
-    },
-  };
 
   // creacion del data
   const [data, setData] = useState({
@@ -197,18 +148,18 @@ function App() {
   }, [consulta]);
 
   return (
-    <div>
+    <div className="container">
       <h1>Hola Fabian</h1>
       <h4>Este es un ejemplo</h4>
 
-      <div>
+      <div className="container">
         <h2>Datos:</h2>
         <h4>Lugar: {lugar}</h4>
         <h4>Temperatura: {temperatura}</h4>
         <h4>Humedad: {humedad}</h4>
       </div>
 
-      <div style={{ height: 100, padding: 30 }}>
+      <div className="container">
         <Button
           variant="outline-primary"
           style={{ height: 50 }}
@@ -221,19 +172,21 @@ function App() {
         </Button>
       </div>
 
-      <Button variant="success" onClick={cargarTodosLosDatos}>
-        Cargar Todo
-      </Button>
+      <div className="container">
+        <Button variant="success" onClick={cargarTodosLosDatos}>
+          Cargar Todo
+        </Button>
 
-      <Button variant="warning" onClick={clickTodasCasa}>
-        Cargar Casa
-      </Button>
-      <Button variant="warning" onClick={clickTodasUniver}>
-        Cargar Univer
-      </Button>
-      <Button variant="success" onClick={cargarTempControl}>
-        temperatura
-      </Button>
+        <Button variant="warning" onClick={clickTodasCasa}>
+          Cargar Casa
+        </Button>
+        <Button variant="warning" onClick={clickTodasUniver}>
+          Cargar Univer
+        </Button>
+        <Button variant="success" onClick={cargarTempControl}>
+          temperatura
+        </Button>
+      </div>
 
       <div>
         <Form>
@@ -244,13 +197,7 @@ function App() {
         </Form>
       </div>
 
-      <div
-        style={{
-          width: "100%",
-          backgroundColor: "black",
-          alignContent: "center",
-        }}
-      >
+      <div className="container">
         <Accordion style={{ width: "70%" }}>
           <Accordion.Item eventKey="0">
             <Accordion.Header>{title}</Accordion.Header>
@@ -260,64 +207,21 @@ function App() {
           <Accordion.Item eventKey="1">
             <Accordion.Header>Gráfica de datos</Accordion.Header>
             <Accordion.Body>
-              <Line options={options} data={data} />
+              <ChartCmp dataP={data} />
             </Accordion.Body>
           </Accordion.Item>
 
           <Accordion.Item eventKey="2">
             <Accordion.Header>Tabla de datos</Accordion.Header>
             <Accordion.Body>
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>Lugar</th>
-                    <th>Temperatura</th>
-                    <th>Humedad</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cursoObj.map((curso) => {
-                    return (
-                      <tr key={curso._id}>
-                        <td>{curso.lugar}</td>
-                        <td>{curso.temperatura}</td>
-                        <td>{curso.humedad}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
+              <TableCmp dataP={cursoObj} />
             </Accordion.Body>
           </Accordion.Item>
 
           <Accordion.Item eventKey="3">
             <Accordion.Header>Este es un acordion</Accordion.Header>
             <Accordion.Body>
-              <Carousel>
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100"
-                    src="https://s.yimg.com/ny/api/res/1.2/E7laI2RKh5EPBDFO3NXq6g--/YXBwaWQ9aGlnaGxhbmRlcjt3PTY0MDtoPTQ3Nw--/https://s.yimg.com/uu/api/res/1.2/cgf._bZWNyuziq6ie5CUIg--~B/aD04ODQ7dz0xMTg2O2FwcGlkPXl0YWNoeW9u/http://media.zenfs.com/en/homerun/feed_manager_auto_publish_494/5f2acfff720e9a2c822eaa0b4f37e3dd"
-                    alt="First slide"
-                  />
-                  <Carousel.Caption>
-                    <h3>Perrito Feliz</h3>
-                    <p>Perrito Sonriendo</p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100"
-                    src="https://petslife.com.mx/wp-content/uploads/2020/11/perritos.jpg"
-                    alt="Second slide"
-                  />
-                  <Carousel.Caption>
-                    <h3>Perrito Saludando</h3>
-                    <p>Perrito diciendo hola</p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-              </Carousel>
+              <CarrouselCmp />
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
