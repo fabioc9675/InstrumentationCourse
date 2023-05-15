@@ -1,0 +1,19 @@
+{
+    "name": "instrumentation",
+    "version": "1.0.0",
+    "description": "Course project to sense water quality",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node src/index.js",
+        "server": "nodemon src/index.js"
+    },
+    "author": "Fabian Castano",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.18.2"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.22"
+    }
+}
