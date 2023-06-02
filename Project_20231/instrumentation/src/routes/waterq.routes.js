@@ -12,6 +12,45 @@ router.get("/", async (req, res, next) => {
     res.json(waterqObj);
 });
 
+// solicitud de datos por lugar
+router.get("/place/:lugar", async (req, res, next) => {
+    // raliza el requerimiento de datos por lugar
+    // ejemplo: http://localhost:5000/api/waterq/place/Medellin
+    const lugar = req.params.lugar;
+    const waterqObj = await WaterQ.find({
+        place: lugar,
+    });
+    // respuesta
+    res.json(waterqObj);
+});
+
+// Solicitar el ultimo dato por lugar
+router.get("/last/place/:lug", async (req, res, next) => {
+    // raliza el requerimiento de datos por lugar
+    // ejemplo: http://localhost:5000/api/waterq/last/place/Medellin
+    const lugar = req.params.lug;
+    const waterqObj = await WaterQ.find({
+        place: lugar,
+    })
+        .limit(1)
+        .sort({ $natural: -1 });
+    // respuesta
+    res.json(waterqObj);
+});
+
+// solicitar valores de un lugar y que ph sea mayor que un valor
+router.get("/place/:place/phgt/:ph", async (req, res, next) => {
+    const lugar = req.params.place;
+    const phgt = req.params.ph;
+
+    const waterqObj = await WaterQ.find({
+        place: lugar,
+        ph: { $gt: phgt },
+    });
+
+    res.json(waterqObj);
+});
+
 // postear un dato en la base de datos
 router.post("/", async (req, res, next) => {
     // componer el dato a ser guardado en la base de datos
