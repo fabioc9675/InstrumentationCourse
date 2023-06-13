@@ -5,6 +5,8 @@ import DataTable from "./components/DataTable";
 import DataTablePlace from "./components/DataTablePlace";
 import DataChart from "./components/DataChart";
 
+import "./styles/App.css";
+
 function App() {
   const [objWaterQ, setObjWaterQ] = useState([]);
   const [objWaterQPlace, setObjWaterQPlace] = useState([]);
@@ -31,35 +33,37 @@ function App() {
   }
 
   return (
-    <div className="container">
-      <h1>Hola Fabian Castaño.</h1>
+    <div className="App">
+      <div className="container">
+        <h1>Hola Fabian Castaño.</h1>
 
-      <DataChart
-        data={objWaterQ}
-        array={objWaterQ.map((item) => item.ph)}
-        title="pH"
-      ></DataChart>
+        <DataChart
+          data={objWaterQ}
+          array={objWaterQ.map((item) => item.ph)}
+          title="pH"
+        ></DataChart>
 
-      <DataChart
-        data={objWaterQ}
-        array={objWaterQ.map((item) => item.temperature)}
-        title="Temperatura"
-      ></DataChart>
+        <DataChart
+          data={objWaterQ}
+          array={objWaterQ.map((item) => item.temperature)}
+          title="Temperatura"
+        ></DataChart>
 
-      <DataTable data={objWaterQ} title="Registro de datos"></DataTable>
+        <DataTable data={objWaterQ} title="Registro de datos"></DataTable>
 
-      <DataTablePlace
-        data={objWaterQPlace}
-        title={"Registro de " + lugar}
-      ></DataTablePlace>
+        <DataTablePlace
+          data={objWaterQPlace}
+          title={"Registro de " + lugar}
+        ></DataTablePlace>
 
-      <Button variant="secondary" onClick={loadDataFromDB}>
-        Cargar Datos
-      </Button>
+        <Button variant="secondary" onClick={loadDataFromDB}>
+          Cargar Datos
+        </Button>
 
-      <Button variant="secondary" onClick={loadDataByPlaceFromDB}>
-        Cargar Lugar
-      </Button>
+        <Button variant="secondary" onClick={loadDataByPlaceFromDB}>
+          Cargar Lugar
+        </Button>
+      </div>
     </div>
   );
 }
