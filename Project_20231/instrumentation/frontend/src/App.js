@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { axiosInstance } from "./config/config";
+import DataTable from "./components/DataTable";
+import DataTablePlace from "./components/DataTablePlace";
+import DataChart from "./components/DataChart";
 
 function App() {
   const [objWaterQ, setObjWaterQ] = useState([]);
+  const [objWaterQPlace, setObjWaterQPlace] = useState([]);
+  const lugar = "Girardota";
 
   // Cargar datos desde la DB
   function loadDataFromDB() {
@@ -15,43 +20,45 @@ function App() {
       .catch((err) => console.error(err));
   }
 
+  // Cargar datos desde la DB por lugar
+  function loadDataByPlaceFromDB() {
+    axiosInstance
+      .get(`api/waterq/place/${lugar}`)
+      .then((res) => {
+        setObjWaterQPlace(res.data);
+      })
+      .catch((err) => console.error(err));
+  }
+
   return (
     <div className="container">
       <h1>Hola Fabian Castaño.</h1>
 
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Lugar</th>
-            <th>Estación</th>
-            <th>Turbidez</th>
-            <th>Color</th>
-            <th>Conduc.</th>
-            <th>pH</th>
-            <th>Temp.</th>
-          </tr>
-        </thead>
-        <tbody>
-          {objWaterQ.map((item) => {
-            return (
-              <tr key={item._id}>
-                <td>{item.createdAt}</td>
-                <td>{item.place}</td>
-                <td>{item.station}</td>
-                <td>{item.turbidity}</td>
-                <td>{item.color}</td>
-                <td>{item.conductivity}</td>
-                <td>{item.ph}</td>
-                <td>{item.temperature}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
+      <DataChart
+        data={objWaterQ}
+        array={objWaterQ.map((item) => item.ph)}
+        title="pH"
+      ></DataChart>
+
+      <DataChart
+        data={objWaterQ}
+        array={objWaterQ.map((item) => item.temperature)}
+        title="Temperatura"
+      ></DataChart>
+
+      <DataTable data={objWaterQ} title="Registro de datos"></DataTable>
+
+      <DataTablePlace
+        data={objWaterQPlace}
+        title={"Registro de " + lugar}
+      ></DataTablePlace>
 
       <Button variant="secondary" onClick={loadDataFromDB}>
         Cargar Datos
+      </Button>
+
+      <Button variant="secondary" onClick={loadDataByPlaceFromDB}>
+        Cargar Lugar
       </Button>
     </div>
   );
